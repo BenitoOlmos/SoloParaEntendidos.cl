@@ -1,0 +1,20 @@
+{
+  "name": "api-spe",
+  "version": "1.0.0",
+  "description": "Backend API for SoloParaEntendidos",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.7.0",
+    "@prisma/adapter-pg": "^7.7.0",
+    "pg": "^8.11.3",
+    "express": "^4.21.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "prisma": "^7.7.0"
+  }
+}

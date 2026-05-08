@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: spe_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: soloparaentendidos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: 
+      context: ./backend/api-spe
+      dockerfile: Dockerfile
+    container_name: spe_api
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/soloparaentendidos?schema=public
+      - NODE_ENV=production
+    ports:
+      - "17000:17000"
+
+  frontend:
+    build:
+      context: ./frontend/web-spe
+      dockerfile: Dockerfile.frontend
+    container_name: spe_frontend
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:
