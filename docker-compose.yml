@@ -39,5 +39,16 @@ services:
     ports:
       - "8080:80"
 
+  # El Tubo Mágico de Cloudflare
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: spe_tunnel
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - frontend
+
 volumes:
   postgres_data:
