@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import FloatingMenu from './components/FloatingMenu';
+import { SWRConfig } from 'swr';
+import { GlobalErrorBoundary } from './shared/components/GlobalErrorBoundary';
 
 import AppleTheme from './themes/AppleTheme';
 import RetroTheme from './themes/RetroTheme';
@@ -10,7 +12,7 @@ import ThreeDTheme from './themes/ThreeDTheme';
 // Wrapper for transition
 function ThemeRenderer() {
   const { theme } = useTheme();
-  
+
   // States for crossfade transition
   const [displayTheme, setDisplayTheme] = useState(theme);
   const [transitionClass, setTransitionClass] = useState('theme-enter-active');
@@ -38,13 +40,22 @@ function ThemeRenderer() {
 
 function App() {
   return (
-    <ThemeProvider>
-      {/* El menú flotante es global y consume el contexto */}
-      <FloatingMenu />
-      
-      {/* El renderizador maneja las transiciones de CSS */}
-      <ThemeRenderer />
-    </ThemeProvider>
+    <GlobalErrorBoundary>
+      <SWRConfig
+        value={{
+          fetcher: (resource, init) => fetch(resource, init).then((res) => res.json()),
+          revalidateOnFocus: false, // Optimización
+        }}
+      >
+        <ThemeProvider>
+          {/* El menú flotante es global y consume el contexto */}
+          <FloatingMenu />
+
+          {/* El renderizador maneja las transiciones de CSS */}
+          <ThemeRenderer />
+        </ThemeProvider>
+      </SWRConfig>
+    </GlobalErrorBoundary>
   );
 }
 

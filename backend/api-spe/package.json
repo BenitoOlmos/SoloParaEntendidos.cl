@@ -2,19 +2,39 @@
   "name": "api-spe",
   "version": "1.0.0",
   "description": "Backend API for SoloParaEntendidos",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "tsx index.ts",
+    "dev": "tsx watch index.ts"
   },
   "dependencies": {
-    "@prisma/client": "^7.7.0",
     "@prisma/adapter-pg": "^7.7.0",
-    "pg": "^8.11.3",
+    "@prisma/client": "^7.7.0",
+    "@spe/schemas": "*",
+    "bullmq": "^5.76.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "dotenv": "^16.4.5"
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.10.1",
+    "pg": "^8.11.3",
+    "pino": "^9.5.0",
+    "pino-http": "^10.3.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "prisma": "^7.7.0"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "@types/pg": "^8.11.6",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "prisma": "^7.7.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.4.5"
   }
 }
