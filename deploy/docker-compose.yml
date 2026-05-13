@@ -18,8 +18,6 @@ services:
     image: redis:alpine
     container_name: spe_redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
 
   api:
     build: 
