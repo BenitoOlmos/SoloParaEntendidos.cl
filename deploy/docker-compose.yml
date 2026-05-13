@@ -23,12 +23,13 @@ services:
 
   api:
     build: 
-      context: ./backend/api-spe
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: backend/api-spe/Dockerfile
     container_name: spe_api
     restart: unless-stopped
     depends_on:
       - db
+      - redis
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/soloparaentendidos?schema=public
       - NODE_ENV=production
@@ -37,8 +38,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend/web-spe
-      dockerfile: Dockerfile.frontend
+      context: ../
+      dockerfile: frontend/web-spe/Dockerfile.frontend
     container_name: spe_frontend
     restart: unless-stopped
     depends_on:

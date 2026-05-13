@@ -1,29 +1,33 @@
-# Dockerfile.api para el Backend de Node.js (con Prisma)
+# Dockerfile.api para el Backend de Node.js (con Prisma y Monorepo)
 FROM node:22-alpine
 
 WORKDIR /app
 
-# Instalar dependencias necesarias para Prisma y Postgres en Alpine
+# Instalar openssl para Prisma
 RUN apk add --no-cache openssl
 
-# Copiar archivos de dependencias
+# Copiar definiciones
 COPY package*.json ./
-COPY prisma.config.ts ./
-COPY prisma ./prisma/
+COPY packages/schemas/package.json ./packages/schemas/
+COPY backend/api-spe/package.json ./backend/api-spe/
 
-# Instalar dependencias
-RUN npm install
+# Instalar dependencias del monorepo
+RUN npm ci
 
-# Generar cliente de Prisma para Linux
+# Copiar schemas y backend
+COPY packages/schemas ./packages/schemas
+COPY backend/api-spe ./backend/api-spe
+
+# Compilar schemas
+WORKDIR /app/packages/schemas
+RUN npm run build
+
+# Generar Prisma en backend
+WORKDIR /app/backend/api-spe
 RUN npx prisma generate
 
-# Copiar el resto del código
-COPY . .
-
-# Exponer puerto de la API (ajustar si es distinto)
+# Exponer puerto
 EXPOSE 17000
 
-# Comando para iniciar la API. 
-# Asumiendo que se puede iniciar con node o algún script start en package.json
-# Ajustar "npm start" por el comando real, ej: "node src/server.js"
+# Usar tsx para correr index.ts en producción
 CMD ["npm", "start"]
