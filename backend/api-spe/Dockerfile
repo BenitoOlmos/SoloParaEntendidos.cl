@@ -6,13 +6,13 @@ WORKDIR /app
 # Instalar openssl para Prisma
 RUN apk add --no-cache openssl
 
-# Copiar definiciones
-COPY package*.json ./
+# Copiar definiciones (sin package-lock para evitar conflictos de bindings OS)
+COPY package.json ./
 COPY packages/schemas/package.json ./packages/schemas/
 COPY backend/api-spe/package.json ./backend/api-spe/
 
 # Instalar dependencias del monorepo
-RUN npm ci
+RUN npm install
 
 # Copiar schemas y backend
 COPY packages/schemas ./packages/schemas
